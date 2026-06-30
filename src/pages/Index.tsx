@@ -213,21 +213,21 @@ export default function Index() {
       </div>
 
       <nav
-        className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-6 transition-opacity duration-700 md:px-12 ${
+        className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between gap-4 px-4 py-4 transition-opacity duration-700 md:px-12 md:py-6 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
         <button
           onClick={() => scrollToSection(0)}
-          className="flex items-center gap-2 transition-transform hover:scale-105"
+          className="flex shrink-0 items-center gap-2 transition-transform hover:scale-105"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary backdrop-blur-md transition-all duration-300 hover:scale-110">
-            <span className="font-sans text-xl font-bold text-primary-foreground">❄</span>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary backdrop-blur-md transition-all duration-300 hover:scale-110 md:h-10 md:w-10">
+            <span className="font-sans text-lg font-bold text-primary-foreground md:text-xl">❄</span>
           </div>
-          <span className="font-sans text-xl font-semibold tracking-tight text-foreground">ПермРемХолод</span>
+          <span className="font-sans text-base font-semibold tracking-tight text-foreground md:text-xl">ПермРемХолод</span>
         </button>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-5 lg:flex xl:gap-8">
           {["Главная", "Неисправности", "Услуги", "Районы", "Информация"].map((item, index) => (
             <button
               key={item}
@@ -246,9 +246,11 @@ export default function Index() {
           ))}
         </div>
 
-        <MagneticButton variant="primary" onClick={() => scrollToSection(4)}>
-          Вызвать мастера
-        </MagneticButton>
+        <div className="shrink-0">
+          <MagneticButton variant="primary" onClick={() => scrollToSection(4)}>
+            Вызвать мастера
+          </MagneticButton>
+        </div>
       </nav>
 
       <div
