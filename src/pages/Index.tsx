@@ -5,6 +5,7 @@ import { StagesSection } from "@/components/sections/stages-section"
 import { WorkSection } from "@/components/sections/work-section"
 import { ServicesSection } from "@/components/sections/services-section"
 import { AboutSection } from "@/components/sections/about-section"
+import { ReviewsSection } from "@/components/sections/reviews-section"
 import { ContactSection } from "@/components/sections/contact-section"
 import { MagneticButton } from "@/components/magnetic-button"
 import { useRef, useEffect, useState } from "react"
@@ -80,7 +81,7 @@ export default function Index() {
       const deltaX = touchStartX.current - touchEndX
 
       if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
-        if (deltaY > 0 && currentSection < 5) {
+        if (deltaY > 0 && currentSection < 6) {
           scrollToSection(currentSection + 1)
         } else if (deltaY < 0 && currentSection > 0) {
           scrollToSection(currentSection - 1)
@@ -150,7 +151,7 @@ export default function Index() {
         const scrollLeft = scrollContainerRef.current.scrollLeft
         const newSection = Math.round(scrollLeft / sectionWidth)
 
-        if (newSection !== currentSection && newSection >= 0 && newSection <= 5) {
+        if (newSection !== currentSection && newSection >= 0 && newSection <= 6) {
           setCurrentSection(newSection)
         }
 
@@ -234,6 +235,7 @@ export default function Index() {
             { label: "Этапы", section: 1 },
             { label: "Неисправности", section: 2 },
             { label: "Услуги", section: 3 },
+            { label: "Отзывы", section: 5 },
             { label: "Районы", route: "/districts" },
             { label: "Информация", route: "/info" },
           ].map((item) => (
@@ -295,7 +297,7 @@ export default function Index() {
               <MagneticButton
                 size="lg"
                 variant="primary"
-                onClick={() => scrollToSection(5)}
+                onClick={() => scrollToSection(6)}
               >
                 Вызвать мастера
               </MagneticButton>
@@ -319,6 +321,7 @@ export default function Index() {
         <WorkSection />
         <ServicesSection />
         <AboutSection scrollToSection={scrollToSection} />
+        <ReviewsSection />
         <ContactSection />
       </div>
 
