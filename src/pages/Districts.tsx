@@ -2,24 +2,156 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Icon from "@/components/ui/icon"
 
-const DISTRICTS = [
-  "Свердловский район",
-  "Ленинский район",
-  "Индустриальный район",
-  "Дзержинский район",
-  "Мотовилихинский район",
-  "Орджоникидзевский район",
-  "Кировский район",
-  "Краснокамское направление",
-  "Юго-Камское направление",
-  "Кунгурское направление",
-  "Сылвенское направление",
-  "Добрянское направление",
+type MicroGroup = {
+  title: string
+  note?: string
+  items: string[]
+}
+
+type District = {
+  name: string
+  groups?: MicroGroup[]
+}
+
+const DISTRICTS: District[] = [
+  {
+    name: "Свердловский район",
+    groups: [
+      {
+        title: "Без комиссии за выезд",
+        note: "Выезжаем бесплатно в случае заказа ремонта холодильника.",
+        items: [
+          "Центральный район Перми",
+          "мкр. Громовский",
+          "мкр. Островский",
+          "мкр. Зелёное Хозяйство",
+          "мкр. Краснова",
+          "мкр. Октябрьский",
+          "мкр. Крохалёва (Крохалевка)",
+          "мкр. Юбилейный",
+          "мкр. Южный",
+          "мкр. Владимирский (Загарье)",
+          "мкр. Липовая Гора",
+        ],
+      },
+      {
+        title: "С комиссией за выезд",
+        note: "За выезд дополнительная оплата: 500 руб.",
+        items: ["мкр. Новые Ляды", "мкр. Ново-Бродовский"],
+      },
+    ],
+  },
+  { name: "Ленинский район" },
+  {
+    name: "Индустриальный район",
+    groups: [
+      {
+        title: "Без комиссии за выезд",
+        note: "Выезжаем бесплатно в случае заказа ремонта холодильника.",
+        items: [
+          "мкр. Новоплоский",
+          "мкр. Балатово",
+          "мкр. Ераничи",
+          "мкр. Авиагородок",
+          "мкр. Нагорный",
+          "мкр. Бахаревка",
+          "мкр. Свиязева",
+          "п. Верхние Муллы",
+        ],
+      },
+      {
+        title: "С комиссией за выезд",
+        note: "За выезд дополнительная оплата: 300 руб.",
+        items: ["д. Хмели", "п. Субботино", "п. Осенцы"],
+      },
+    ],
+  },
+  {
+    name: "Дзержинский район",
+    groups: [
+      {
+        title: "Без комиссии за выезд",
+        note: "Выезжаем бесплатно в случае заказа ремонта холодильника.",
+        items: [
+          "Центральный район Перми",
+          "мкр. Заимка",
+          "мкр. Данилиха",
+          "мкр. Староплоский",
+          "мкр. Светлый",
+          "мкр. Железнодорожный",
+          "мкр. Парковый",
+          "мкр. Красный октябрь",
+          "п. Заостровка",
+        ],
+      },
+      {
+        title: "С комиссией за выезд",
+        note: "За выезд дополнительная оплата: 200 руб.",
+        items: ["мкр. Пролетарский", "мкр. Акуловский", "мкр. Комсомольский", "мкр. Заречный"],
+      },
+    ],
+  },
+  { name: "Мотовилихинский район" },
+  {
+    name: "Орджоникидзевский район",
+    groups: [
+      {
+        title: "С комиссией за выезд — 300 руб.",
+        note: "За выезд дополнительная оплата: 300 руб.",
+        items: [
+          "мкр. Чапаевский",
+          "мкр. Камский",
+          "мкр. Кислотные дачи",
+          "мкр. Молодёжный (2 участок)",
+          "мкр. КамГЭС",
+          "мкр. Январский",
+          "мкр. Домостроительный",
+          "мкр. Лёвшино",
+          "мкр. Новогайвинский",
+          "мкр. Гайва",
+        ],
+      },
+      {
+        title: "С комиссией за выезд — 500 руб.",
+        note: "За выезд дополнительная оплата: 500 руб.",
+        items: ["мкр. Голованово", "п. Заозерье"],
+      },
+    ],
+  },
+  {
+    name: "Кировский район",
+    groups: [
+      {
+        title: "С комиссией за выезд — 300 руб.",
+        note: "За выезд дополнительная оплата: 300 руб.",
+        items: [
+          "мкр. Судзавод",
+          "пос. Кировский",
+          "мкр. Налимиха",
+          "мкр. Старые Водники",
+          "мкр. Новые Водники",
+          "мкр. Закамск",
+        ],
+      },
+      {
+        title: "С комиссией за выезд — 500 руб.",
+        note: "За выезд дополнительная оплата: 500 руб.",
+        items: ["мкр. Крым"],
+      },
+    ],
+  },
+  { name: "Краснокамское направление" },
+  { name: "Юго-Камское направление" },
+  { name: "Кунгурское направление" },
+  { name: "Сылвенское направление" },
+  { name: "Добрянское направление" },
 ]
 
 export default function Districts() {
   const navigate = useNavigate()
-  const [active, setActive] = useState(DISTRICTS[0])
+  const [activeName, setActiveName] = useState(DISTRICTS[0].name)
+  const active = activeName
+  const activeDistrict = DISTRICTS.find((d) => d.name === activeName) ?? DISTRICTS[0]
 
   const mapQuery = encodeURIComponent(`Пермь ${active}`)
   const mapSrc = `https://yandex.ru/map-widget/v1/?mode=search&text=${mapQuery}&z=12`
@@ -66,15 +198,15 @@ export default function Districts() {
           <div className="flex flex-col gap-2">
             {DISTRICTS.map((d) => (
               <button
-                key={d}
-                onClick={() => setActive(d)}
+                key={d.name}
+                onClick={() => setActiveName(d.name)}
                 className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left font-sans text-sm transition-all ${
-                  active === d
+                  activeName === d.name
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border bg-card text-foreground/80 hover:border-primary/40 hover:text-foreground"
                 }`}
               >
-                <span>{d}</span>
+                <span>{d.name}</span>
                 <Icon name="ChevronRight" size={16} />
               </button>
             ))}
@@ -119,6 +251,44 @@ export default function Districts() {
                 Вызвать мастера
               </a>
             </div>
+
+            {activeDistrict.groups && (
+              <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
+                <h3 className="mb-6 font-sans text-xl font-light tracking-tight text-foreground md:text-2xl">
+                  Микрорайоны выезда
+                </h3>
+                <div className="space-y-6">
+                  {activeDistrict.groups.map((group) => {
+                    const isFree = group.title.startsWith("Без комиссии")
+                    return (
+                      <div key={group.title}>
+                        <div className="mb-3 flex items-center gap-2">
+                          <Icon
+                            name={isFree ? "BadgeCheck" : "Wallet"}
+                            size={18}
+                            className={isFree ? "text-green-500" : "text-primary"}
+                          />
+                          <span className="font-sans text-base font-medium text-foreground">{group.title}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {group.items.map((item) => (
+                            <span
+                              key={item}
+                              className="rounded-full border border-border bg-background px-3 py-1.5 font-sans text-sm text-foreground/80"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                        {group.note && (
+                          <p className="mt-3 font-mono text-xs text-foreground/60">{group.note}</p>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
