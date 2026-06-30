@@ -1,5 +1,6 @@
 import { useParams, useNavigate, Link } from "react-router-dom"
 import Icon from "@/components/ui/icon"
+import { CustomCursor } from "@/components/custom-cursor"
 
 type ServiceItem = {
   title: string
@@ -388,6 +389,7 @@ export default function ServiceDetail() {
 
   return (
     <main className="min-h-screen w-full bg-background text-foreground">
+      <CustomCursor />
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border bg-primary">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Icon from "@/components/ui/icon"
+import { CustomCursor } from "@/components/custom-cursor"
 
 type MicroGroup = {
   title: string
@@ -158,6 +159,7 @@ export default function Districts() {
 
   return (
     <main className="min-h-screen w-full bg-background text-foreground">
+      <CustomCursor />
       <header className="sticky top-0 z-50 border-b border-border bg-primary">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <button
