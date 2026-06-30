@@ -57,6 +57,20 @@ export function WorkSection() {
               year: "-30°",
               direction: "left",
             },
+            {
+              number: "06",
+              title: "В холодильнике скапливается вода",
+              category: "В холодильнике или под ним начинает появляться и скапливаться талая вода",
+              year: "💧",
+              direction: "right",
+            },
+            {
+              number: "07",
+              title: "Возникают странные звуки",
+              category: "Бульканье, гудение, щелкание, треск или стук при работе холодильника",
+              year: "🔊",
+              direction: "left",
+            },
           ].map((project, i) => (
             <ProjectCard key={i} project={project} index={i} isVisible={isVisible} />
           ))}
