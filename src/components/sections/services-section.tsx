@@ -1,4 +1,5 @@
 import { useReveal } from "@/hooks/use-reveal"
+import Icon from "@/components/ui/icon"
 
 export function ServicesSection() {
   const { ref, isVisible } = useReveal(0.3)
@@ -17,30 +18,40 @@ export function ServicesSection() {
           <h2 className="mb-2 font-sans text-5xl font-light tracking-tight text-foreground md:text-6xl lg:text-7xl">
             Услуги
           </h2>
-          <p className="font-mono text-sm text-foreground/60 md:text-base">/ Наши компетенции</p>
+          <p className="font-mono text-sm text-foreground/60 md:text-base">/ Что мы ремонтируем</p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 md:gap-x-16 md:gap-y-12 lg:gap-x-24">
           {[
             {
-              title: "Веб-разработка",
-              description: "Создание современных веб-приложений любой сложности",
+              icon: "Refrigerator",
+              title: "Ремонт бытовых холодильников",
+              description: "Все марки и модели домашних холодильников с выездом на дом",
               direction: "top",
             },
             {
-              title: "UI/UX Дизайн",
-              description: "Проектирование удобных и красивых интерфейсов",
+              icon: "Store",
+              title: "Ремонт торговых холодильников",
+              description: "Витрины, лари и холодильное оборудование для магазинов",
               direction: "right",
             },
             {
-              title: "Мобильные приложения",
-              description: "Кроссплатформенная разработка для iOS и Android",
+              icon: "Car",
+              title: "Ремонт автохолодильников",
+              description: "Восстановление работы автомобильных холодильников",
               direction: "left",
             },
             {
-              title: "Консалтинг",
-              description: "Техническая экспертиза и стратегическое планирование",
+              icon: "WashingMachine",
+              title: "Ремонт стиральных машин",
+              description: "Диагностика и ремонт стиральных машин любых брендов",
               direction: "bottom",
+            },
+            {
+              icon: "AirVent",
+              title: "Сервис кондиционеров",
+              description: "Заправка, чистка и ремонт кондиционеров и сплит-систем",
+              direction: "top",
             },
           ].map((service, i) => (
             <ServiceCard key={i} service={service} index={i} isVisible={isVisible} />
@@ -56,7 +67,7 @@ function ServiceCard({
   index,
   isVisible,
 }: {
-  service: { title: string; description: string; direction: string }
+  service: { icon: string; title: string; description: string; direction: string }
   index: number
   isVisible: boolean
 }) {
@@ -86,7 +97,9 @@ function ServiceCard({
       }}
     >
       <div className="mb-3 flex items-center gap-3">
-        <div className="h-px w-8 bg-foreground/30 transition-all duration-300 group-hover:w-12 group-hover:bg-foreground/50" />
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
+          <Icon name={service.icon} fallback="Wrench" size={24} />
+        </div>
         <span className="font-mono text-xs text-foreground/60">0{index + 1}</span>
       </div>
       <h3 className="mb-2 font-sans text-2xl font-light text-foreground md:text-3xl">{service.title}</h3>

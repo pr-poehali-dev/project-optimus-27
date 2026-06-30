@@ -15,32 +15,46 @@ export function WorkSection() {
           }`}
         >
           <h2 className="mb-2 font-sans text-5xl font-light tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            Проекты
+            Неисправности
           </h2>
-          <p className="font-mono text-sm text-foreground/60 md:text-base">/ Избранные работы</p>
+          <p className="font-mono text-sm text-foreground/60 md:text-base">/ Определите симптом — расскажите мастеру</p>
         </div>
 
         <div className="space-y-6 md:space-y-8">
           {[
             {
               number: "01",
-              title: "ТехноСтарт",
-              category: "Корпоративный портал",
-              year: "2024",
+              title: "Холодильник не включается",
+              category: "Подключён к сети, но не запускается полностью или частично",
+              year: "Ø",
               direction: "left",
             },
             {
               number: "02",
-              title: "АльфаТрейд",
-              category: "Финтех платформа",
-              year: "2024",
+              title: "Камера не охлаждается",
+              category: "Морозилка морозит, а в холодильной недостаточно холода",
+              year: "+5°",
               direction: "right",
             },
             {
               number: "03",
-              title: "МедиаПульс",
-              category: "Медиа сервис",
-              year: "2023",
+              title: "Морозилка перестала морозить",
+              category: "Холодильная охлаждает, а в морозильной не замораживает",
+              year: "0°",
+              direction: "left",
+            },
+            {
+              number: "04",
+              title: "Полностью не морозит",
+              category: "Недостаточная температура для охлаждения и заморозки",
+              year: "+15°",
+              direction: "right",
+            },
+            {
+              number: "05",
+              title: "Перемораживает",
+              category: "Сильно морозит, компрессор почти не отключается",
+              year: "-30°",
               direction: "left",
             },
           ].map((project, i) => (
