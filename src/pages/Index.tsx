@@ -1,6 +1,7 @@
 import { Shader, ChromaFlow, Swirl } from "shaders/react"
 import { CustomCursor } from "@/components/custom-cursor"
 import { GrainOverlay } from "@/components/grain-overlay"
+import { StagesSection } from "@/components/sections/stages-section"
 import { WorkSection } from "@/components/sections/work-section"
 import { ServicesSection } from "@/components/sections/services-section"
 import { AboutSection } from "@/components/sections/about-section"
@@ -79,7 +80,7 @@ export default function Index() {
       const deltaX = touchStartX.current - touchEndX
 
       if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
-        if (deltaY > 0 && currentSection < 4) {
+        if (deltaY > 0 && currentSection < 5) {
           scrollToSection(currentSection + 1)
         } else if (deltaY < 0 && currentSection > 0) {
           scrollToSection(currentSection - 1)
@@ -149,7 +150,7 @@ export default function Index() {
         const scrollLeft = scrollContainerRef.current.scrollLeft
         const newSection = Math.round(scrollLeft / sectionWidth)
 
-        if (newSection !== currentSection && newSection >= 0 && newSection <= 4) {
+        if (newSection !== currentSection && newSection >= 0 && newSection <= 5) {
           setCurrentSection(newSection)
         }
 
@@ -228,24 +229,31 @@ export default function Index() {
         </button>
 
         <div className="hidden items-center gap-5 lg:flex xl:gap-8">
-          {["Главная", "Неисправности", "Услуги", "Районы", "Информация"].map((item, index) => (
+          {[
+            { label: "Главная", section: 0 },
+            { label: "Этапы", section: 1 },
+            { label: "Неисправности", section: 2 },
+            { label: "Услуги", section: 3 },
+            { label: "Районы", route: "/districts" },
+            { label: "Информация", route: "/info" },
+          ].map((item) => (
             <button
-              key={item}
+              key={item.label}
               onClick={() =>
-                item === "Информация"
-                  ? navigate("/info")
-                  : item === "Районы"
-                    ? navigate("/districts")
-                    : scrollToSection(index)
+                item.route ? navigate(item.route) : scrollToSection(item.section!)
               }
               className={`group relative font-sans text-sm font-medium transition-colors ${
-                currentSection === index ? "text-foreground" : "text-foreground/80 hover:text-foreground"
+                item.section !== undefined && currentSection === item.section
+                  ? "text-foreground"
+                  : "text-foreground/80 hover:text-foreground"
               }`}
             >
-              {item}
+              {item.label}
               <span
                 className={`absolute -bottom-1 left-0 h-px bg-foreground transition-all duration-300 ${
-                  currentSection === index ? "w-full" : "w-0 group-hover:w-full"
+                  item.section !== undefined && currentSection === item.section
+                    ? "w-full"
+                    : "w-0 group-hover:w-full"
                 }`}
               />
             </button>
@@ -253,7 +261,7 @@ export default function Index() {
         </div>
 
         <div className="shrink-0">
-          <MagneticButton variant="primary" onClick={() => scrollToSection(4)}>
+          <MagneticButton variant="primary" onClick={() => scrollToSection(5)}>
             Вызвать мастера
           </MagneticButton>
         </div>
@@ -287,11 +295,11 @@ export default function Index() {
               <MagneticButton
                 size="lg"
                 variant="primary"
-                onClick={() => scrollToSection(4)}
+                onClick={() => scrollToSection(5)}
               >
                 Вызвать мастера
               </MagneticButton>
-              <MagneticButton size="lg" variant="secondary" onClick={() => scrollToSection(2)}>
+              <MagneticButton size="lg" variant="secondary" onClick={() => scrollToSection(3)}>
                 Наши услуги
               </MagneticButton>
             </div>
@@ -307,6 +315,7 @@ export default function Index() {
           </div>
         </section>
 
+        <StagesSection />
         <WorkSection />
         <ServicesSection />
         <AboutSection scrollToSection={scrollToSection} />
