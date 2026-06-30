@@ -7,8 +7,10 @@ import { AboutSection } from "@/components/sections/about-section"
 import { ContactSection } from "@/components/sections/contact-section"
 import { MagneticButton } from "@/components/magnetic-button"
 import { useRef, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Index() {
+  const navigate = useNavigate()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -229,7 +231,7 @@ export default function Index() {
           {["Главная", "Неисправности", "Услуги", "Районы", "Информация"].map((item, index) => (
             <button
               key={item}
-              onClick={() => scrollToSection(index)}
+              onClick={() => (item === "Информация" ? navigate("/info") : scrollToSection(index))}
               className={`group relative font-sans text-sm font-medium transition-colors ${
                 currentSection === index ? "text-foreground" : "text-foreground/80 hover:text-foreground"
               }`}
