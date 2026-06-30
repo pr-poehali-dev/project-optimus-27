@@ -231,7 +231,13 @@ export default function Index() {
           {["Главная", "Неисправности", "Услуги", "Районы", "Информация"].map((item, index) => (
             <button
               key={item}
-              onClick={() => (item === "Информация" ? navigate("/info") : scrollToSection(index))}
+              onClick={() =>
+                item === "Информация"
+                  ? navigate("/info")
+                  : item === "Районы"
+                    ? navigate("/districts")
+                    : scrollToSection(index)
+              }
               className={`group relative font-sans text-sm font-medium transition-colors ${
                 currentSection === index ? "text-foreground" : "text-foreground/80 hover:text-foreground"
               }`}
