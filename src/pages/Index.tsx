@@ -219,7 +219,7 @@ export default function Index() {
       >
         <button
           onClick={() => scrollToSection(0)}
-          className="flex shrink-0 items-center gap-2 transition-transform hover:scale-105"
+          className="flex shrink-0 -translate-y-2 items-center gap-2 transition-transform hover:scale-105 md:-translate-y-3"
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary backdrop-blur-md transition-all duration-300 hover:scale-110 md:h-10 md:w-10">
             <span className="font-sans text-lg font-bold text-primary-foreground md:text-xl">❄</span>
