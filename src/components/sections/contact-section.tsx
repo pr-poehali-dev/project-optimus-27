@@ -217,7 +217,7 @@ export function ContactSection() {
   }
 
   const selectClass =
-    "w-full border-b border-foreground/60 bg-background/80 py-2 text-base text-foreground appearance-none focus:border-foreground focus:outline-none md:py-2.5 md:text-lg cursor-pointer font-sans"
+    "w-full border-b border-foreground/30 bg-transparent py-2 text-base text-foreground appearance-none focus:border-foreground/50 focus:outline-none md:py-2.5 md:text-lg cursor-pointer font-sans"
 
   return (
     <section
