@@ -351,9 +351,9 @@ export function ContactSection() {
                       required
                       className={`${selectClass} pr-6`}
                     >
-                      <option value="" disabled className="text-foreground/50">Выберите район</option>
+                      <option value="" disabled>Выберите район</option>
                       {Object.keys(DISTRICTS).map((d) => (
-                        <option key={d} value={d} className="text-black bg-white">{d}</option>
+                        <option key={d} value={d}>{d}</option>
                       ))}
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
@@ -372,11 +372,11 @@ export function ContactSection() {
                         onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                         className={`${selectClass} pr-6`}
                       >
-                        <option value="" className="text-foreground/50">Выберите микрорайон</option>
+                        <option value="">Выберите микрорайон</option>
                         {districtGroups.map((group) => (
                           <optgroup key={group.label} label={group.label}>
                             {group.areas.map((a) => (
-                              <option key={a} value={a} className="text-black bg-white">{a}</option>
+                              <option key={a} value={a}>{a}</option>
                             ))}
                           </optgroup>
                         ))}
