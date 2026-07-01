@@ -262,11 +262,7 @@ export default function Index() {
           ))}
         </div>
 
-        <div className="shrink-0">
-          <MagneticButton variant="primary" onClick={() => scrollToSection(5)}>
-            Вызвать мастера
-          </MagneticButton>
-        </div>
+
       </nav>
 
       <div
