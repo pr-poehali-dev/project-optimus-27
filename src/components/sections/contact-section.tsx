@@ -217,7 +217,7 @@ export function ContactSection() {
   }
 
   const selectClass =
-    "w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground appearance-none focus:border-foreground/50 focus:outline-none md:py-2 md:text-base cursor-pointer"
+    "w-full border-b border-foreground/60 bg-background/80 py-2 text-base text-foreground appearance-none focus:border-foreground focus:outline-none md:py-2.5 md:text-lg cursor-pointer font-sans"
 
   return (
     <section
@@ -349,11 +349,11 @@ export function ContactSection() {
                       value={formData.district}
                       onChange={(e) => handleDistrictChange(e.target.value)}
                       required
-                      className={`${selectClass} pr-6 ${!formData.district ? "text-foreground/40" : ""}`}
+                      className={`${selectClass} pr-6`}
                     >
-                      <option value="" disabled>Выберите район</option>
+                      <option value="" disabled className="text-foreground/50">Выберите район</option>
                       {Object.keys(DISTRICTS).map((d) => (
-                        <option key={d} value={d}>{d}</option>
+                        <option key={d} value={d} className="text-black bg-white">{d}</option>
                       ))}
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
@@ -370,13 +370,13 @@ export function ContactSection() {
                       <select
                         value={formData.area}
                         onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                        className={`${selectClass} pr-6 ${!formData.area ? "text-foreground/40" : ""}`}
+                        className={`${selectClass} pr-6`}
                       >
-                        <option value="">Выберите микрорайон</option>
+                        <option value="" className="text-foreground/50">Выберите микрорайон</option>
                         {districtGroups.map((group) => (
                           <optgroup key={group.label} label={group.label}>
                             {group.areas.map((a) => (
-                              <option key={a} value={a}>{a}</option>
+                              <option key={a} value={a} className="text-black bg-white">{a}</option>
                             ))}
                           </optgroup>
                         ))}
