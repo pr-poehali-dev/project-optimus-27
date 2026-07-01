@@ -40,7 +40,7 @@ const SERVICES = [
   },
 ]
 
-export function ServicesSection() {
+export function ServicesSection({ onOrder }: { onOrder?: () => void }) {
   const { ref, isVisible } = useReveal(0.3)
   const navigate = useNavigate()
 
@@ -69,6 +69,7 @@ export function ServicesSection() {
               index={i}
               isVisible={isVisible}
               onClick={() => navigate(`/services/${service.slug}`)}
+              onOrder={onOrder}
             />
           ))}
         </div>
@@ -82,11 +83,13 @@ function ServiceCard({
   index,
   isVisible,
   onClick,
+  onOrder,
 }: {
   service: { icon: string; title: string; description: string; direction: string }
   index: number
   isVisible: boolean
   onClick: () => void
+  onOrder?: () => void
 }) {
   const getRevealClass = () => {
     if (!isVisible) {
@@ -122,9 +125,19 @@ function ServiceCard({
         {service.title}
       </h3>
       <p className="max-w-sm text-sm leading-relaxed text-foreground/80 md:text-base">{service.description}</p>
-      <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-primary opacity-0 transition-opacity group-hover:opacity-100">
-        Подробнее <Icon name="ArrowRight" size={12} />
-      </span>
+      <div className="mt-3 flex items-center gap-3">
+        <span className="inline-flex items-center gap-1 font-mono text-xs text-primary opacity-0 transition-opacity group-hover:opacity-100">
+          Подробнее <Icon name="ArrowRight" size={12} />
+        </span>
+        {onOrder && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onOrder() }}
+            className="ml-auto rounded-lg border border-primary/40 px-3 py-1 font-mono text-xs text-primary opacity-0 transition-all group-hover:opacity-100 hover:bg-primary hover:text-primary-foreground"
+          >
+            Заказать
+          </button>
+        )}
+      </div>
     </button>
   )
 }
