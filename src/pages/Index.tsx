@@ -315,7 +315,7 @@ export default function Index() {
 
         <StagesSection />
         <WorkSection />
-        <ServicesSection onOrder={() => scrollToSection(6)} />
+        <ServicesSection />
         <AboutSection scrollToSection={scrollToSection} />
         <ReviewsSection />
         <ContactSection />

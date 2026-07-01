@@ -1,4 +1,4 @@
-import { Phone, MapPin, ChevronDown } from "lucide-react"
+import { Phone, MapPin, Building2, ChevronDown } from "lucide-react"
 import { useReveal } from "@/hooks/use-reveal"
 import { useState, type FormEvent } from "react"
 import { MagneticButton } from "@/components/magnetic-button"
@@ -265,6 +265,19 @@ export function ContactSection() {
                 style={{ transitionDelay: "350ms" }}
               >
                 <div className="mb-1 flex items-center gap-2">
+                  <Building2 className="h-3 w-3 text-foreground/60" />
+                  <span className="font-mono text-xs text-foreground/60">Адрес</span>
+                </div>
+                <p className="text-base text-foreground md:text-2xl">ул. Мира 5А, Пермь</p>
+              </div>
+
+              <div
+                className={`transition-all duration-700 ${
+                  isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+                }`}
+                style={{ transitionDelay: "430ms" }}
+              >
+                <div className="mb-1 flex items-center gap-2">
                   <MapPin className="h-3 w-3 text-foreground/60" />
                   <span className="font-mono text-xs text-foreground/60">Районы обслуживания</span>
                 </div>
@@ -272,10 +285,27 @@ export function ContactSection() {
               </div>
 
               <div
+                className={`transition-all duration-700 ${
+                  isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+                }`}
+                style={{ transitionDelay: "510ms" }}
+              >
+                <iframe
+                  src="https://yandex.ru/map-widget/v1/?ll=56.238658%2C58.003128&mode=search&text=%D0%9F%D0%B5%D1%80%D0%BC%D1%8C%2C+%D1%83%D0%BB.+%D0%9C%D0%B8%D1%80%D0%B0%2C+5%D0%90&z=16"
+                  width="100%"
+                  height="160"
+                  className="rounded-xl border border-foreground/15 opacity-90"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  title="Яндекс.Карта — ул. Мира 5А, Пермь"
+                />
+              </div>
+
+              <div
                 className={`flex gap-2 pt-2 transition-all duration-700 md:pt-4 ${
                   isVisible ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"
                 }`}
-                style={{ transitionDelay: "500ms" }}
+                style={{ transitionDelay: "600ms" }}
               >
                 {["Telegram", "WhatsApp", "VK", "permremholod.ru"].map((social) => (
                   <a
