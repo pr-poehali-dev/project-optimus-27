@@ -110,10 +110,10 @@ function ServiceCard({
   }
 
   return (
-    <button
-      onClick={onClick}
-      className={`group text-left transition-all duration-700 ${getRevealClass()}`}
+    <div
+      className={`group cursor-pointer text-left transition-all duration-700 ${getRevealClass()}`}
       style={{ transitionDelay: `${index * 150}ms` }}
+      onClick={onClick}
     >
       <div className="mb-3 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
@@ -138,6 +138,6 @@ function ServiceCard({
           </button>
         )}
       </div>
-    </button>
+    </div>
   )
 }
