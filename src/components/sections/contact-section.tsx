@@ -1,34 +1,223 @@
-import { Phone, MapPin } from "lucide-react"
+import { Phone, MapPin, ChevronDown } from "lucide-react"
 import { useReveal } from "@/hooks/use-reveal"
 import { useState, type FormEvent } from "react"
 import { MagneticButton } from "@/components/magnetic-button"
 
+const DISTRICTS: Record<string, { label: string; fee?: string; areas: string[] }[]> = {
+  "Свердловский район": [
+    {
+      label: "Без комиссии за выезд",
+      areas: [
+        "Центральный район",
+        "мкр. Громовский",
+        "мкр. Островский",
+        "мкр. Зелёное Хозяйство",
+        "мкр. Краснова",
+        "мкр. Октябрьский",
+        "мкр. Крохалёва (Крохалевка)",
+        "мкр. Юбилейный",
+        "мкр. Южный",
+        "мкр. Владимирский (Загарье)",
+        "мкр. Липовая Гора",
+      ],
+    },
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["мкр. Новые Ляды", "мкр. Ново-Бродовский"],
+    },
+  ],
+  "Ленинский район": [
+    {
+      label: "Без комиссии за выезд",
+      areas: [
+        "Центральный район",
+        "мкр. Разгуляй",
+        "мкр. Городские горки",
+        "мкр. Висим",
+        "мкр. Мотовилиха",
+      ],
+    },
+  ],
+  "Индустриальный район": [
+    {
+      label: "Без комиссии за выезд",
+      areas: [
+        "мкр. Новоплоский",
+        "мкр. Балатово",
+        "мкр. Ераничи",
+        "мкр. Авиагородок",
+        "мкр. Нагорный",
+        "мкр. Бахаревка",
+        "мкр. Свиязева",
+        "п. Верхние Муллы",
+      ],
+    },
+    {
+      label: "Комиссия за выезд +300 руб.",
+      fee: "+300 руб.",
+      areas: ["д. Хмели", "п. Субботино", "п. Осенцы"],
+    },
+  ],
+  "Дзержинский район": [
+    {
+      label: "Без комиссии за выезд",
+      areas: [
+        "Центральный район",
+        "мкр. Заимка",
+        "мкр. Данилиха",
+        "мкр. Староплоский",
+        "мкр. Светлый",
+        "мкр. Железнодорожный",
+        "мкр. Парковый",
+        "мкр. Красный Октябрь",
+        "п. Заостровка",
+      ],
+    },
+    {
+      label: "Комиссия за выезд +200 руб.",
+      fee: "+200 руб.",
+      areas: [
+        "мкр. Пролетарский",
+        "мкр. Акуловский",
+        "мкр. Комсомольский",
+        "мкр. Заречный",
+      ],
+    },
+  ],
+  "Мотовилихинский район": [
+    {
+      label: "Без комиссии за выезд",
+      areas: [
+        "мкр. Горбуново",
+        "мкр. Городские горки",
+        "мкр. Ива",
+        "мкр. Ивака",
+        "мкр. Рабочий посёлок",
+        "мкр. Садовый",
+        "п. Хохловка",
+      ],
+    },
+  ],
+  "Орджоникидзевский район": [
+    {
+      label: "Комиссия за выезд +300 руб.",
+      fee: "+300 руб.",
+      areas: [
+        "мкр. Чапаевский",
+        "мкр. Камский",
+        "мкр. Кислотные дачи",
+        "мкр. Молодёжный (2 участок)",
+        "мкр. КамГЭС",
+        "мкр. Январский",
+        "мкр. Домостроительный",
+        "мкр. Лёвшино",
+        "мкр. Новогайвинский",
+        "мкр. Гайва",
+      ],
+    },
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["мкр. Голованово", "п. Заозерье"],
+    },
+  ],
+  "Кировский район": [
+    {
+      label: "Комиссия за выезд +300 руб.",
+      fee: "+300 руб.",
+      areas: [
+        "мкр. Судзавод",
+        "пос. Кировский",
+        "мкр. Налимиха",
+        "мкр. Старые Водники",
+        "мкр. Новые Водники",
+        "мкр. Закамск",
+      ],
+    },
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["мкр. Крым"],
+    },
+  ],
+  "Краснокамское направление": [
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["г. Краснокамск", "п. Майский", "п. Оверята", "п. Октябрьский"],
+    },
+  ],
+  "Юго-Камское направление": [
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["п. Юго-Камский", "с. Насадка", "д. Гамово", "с. Фролы"],
+    },
+  ],
+  "Кунгурское направление": [
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["с. Лобаново", "с. Усть-Качка", "п. Сокол"],
+    },
+  ],
+  "Сылвенское направление": [
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["п. Сылва", "с. Троица", "п. Платошино"],
+    },
+  ],
+  "Добрянское направление": [
+    {
+      label: "Комиссия за выезд +500 руб.",
+      fee: "+500 руб.",
+      areas: ["г. Добрянка", "п. Полазна", "п. Висим"],
+    },
+  ],
+}
+
+type FormData = {
+  name: string
+  phone: string
+  district: string
+  area: string
+  problem: string
+}
+
 export function ContactSection() {
   const { ref, isVisible } = useReveal(0.3)
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" })
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    phone: "",
+    district: "",
+    area: "",
+    problem: "",
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
+  const districtGroups = formData.district ? DISTRICTS[formData.district] ?? [] : []
+  const allAreas = districtGroups.flatMap((g) => g.areas)
+
+  const handleDistrictChange = (val: string) => {
+    setFormData((f) => ({ ...f, district: val, area: "" }))
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.message) {
-      return
-    }
-
+    if (!formData.name || !formData.phone || !formData.district) return
     setIsSubmitting(true)
-
-    // Simulate form submission (replace with actual API call later)
     await new Promise((resolve) => setTimeout(resolve, 1500))
-
     setIsSubmitting(false)
     setSubmitSuccess(true)
-    setFormData({ name: "", email: "", message: "" })
-
-    // Reset success message after 5 seconds
-    setTimeout(() => setSubmitSuccess(false), 5000)
+    setFormData({ name: "", phone: "", district: "", area: "", problem: "" })
+    setTimeout(() => setSubmitSuccess(false), 6000)
   }
+
+  const selectClass =
+    "w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground appearance-none focus:border-foreground/50 focus:outline-none md:py-2 md:text-base cursor-pointer"
 
   return (
     <section
@@ -37,6 +226,7 @@ export function ContactSection() {
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="grid gap-8 md:grid-cols-[1.2fr_1fr] md:gap-16 lg:gap-24">
+          {/* Left side */}
           <div className="flex flex-col justify-center">
             <div
               className={`mb-6 transition-all duration-700 md:mb-12 ${
@@ -100,78 +290,152 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Right side - Minimal form */}
+          {/* Right side — Form */}
           <div className="flex flex-col justify-center">
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              <div
-                className={`transition-all duration-700 ${
-                  isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
-                }`}
-                style={{ transitionDelay: "200ms" }}
-              >
-                <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Имя</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
-                  placeholder="Ваше имя"
-                />
+            {submitSuccess ? (
+              <div className="flex flex-col items-center gap-4 rounded-2xl border border-foreground/20 bg-foreground/5 p-8 text-center">
+                <span className="text-4xl">✅</span>
+                <p className="font-sans text-xl font-light text-foreground">Заявка принята!</p>
+                <p className="font-mono text-sm text-foreground/60">Мастер перезвонит в ближайшее время.</p>
               </div>
-
-              <div
-                className={`transition-all duration-700 ${
-                  isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
-                }`}
-                style={{ transitionDelay: "350ms" }}
-              >
-                <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Телефон</label>
-                <input
-                  type="tel"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
-                  placeholder="+7 (___) ___-__-__"
-                />
-              </div>
-
-              <div
-                className={`transition-all duration-700 ${
-                  isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
-                }`}
-                style={{ transitionDelay: "500ms" }}
-              >
-                <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Что случилось с техникой?</label>
-                <textarea
-                  rows={3}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
-                  placeholder="Например: холодильник не морозит, марка Atlant..."
-                />
-              </div>
-
-              <div
-                className={`transition-all duration-700 ${
-                  isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
-                }`}
-                style={{ transitionDelay: "650ms" }}
-              >
-                <MagneticButton
-                  variant="primary"
-                  size="lg"
-                  className="w-full disabled:opacity-50"
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
+                {/* Name */}
+                <div
+                  className={`transition-all duration-700 ${
+                    isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
+                  }`}
+                  style={{ transitionDelay: "200ms" }}
                 >
-                  {isSubmitting ? "Отправка..." : "Заказать бесплатную диагностику"}
-                </MagneticButton>
-                {submitSuccess && (
-                  <p className="mt-3 text-center font-mono text-sm text-foreground/80">Заявка принята! Мастер скоро перезвонит.</p>
+                  <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Имя</label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                    className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
+                    placeholder="Ваше имя"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div
+                  className={`transition-all duration-700 ${
+                    isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
+                  }`}
+                  style={{ transitionDelay: "300ms" }}
+                >
+                  <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Телефон</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    required
+                    className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
+                    placeholder="+7 (___) ___-__-__"
+                  />
+                </div>
+
+                {/* District */}
+                <div
+                  className={`transition-all duration-700 ${
+                    isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
+                  }`}
+                  style={{ transitionDelay: "400ms" }}
+                >
+                  <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Район</label>
+                  <div className="relative">
+                    <select
+                      value={formData.district}
+                      onChange={(e) => handleDistrictChange(e.target.value)}
+                      required
+                      className={`${selectClass} pr-6 ${!formData.district ? "text-foreground/40" : ""}`}
+                    >
+                      <option value="" disabled>Выберите район</option>
+                      {Object.keys(DISTRICTS).map((d) => (
+                        <option key={d} value={d}>{d}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
+                  </div>
+                </div>
+
+                {/* Area (shown only when district selected) */}
+                {formData.district && allAreas.length > 0 && (
+                  <div
+                    className="animate-in fade-in slide-in-from-top-2 duration-300"
+                  >
+                    <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Микрорайон</label>
+                    <div className="relative">
+                      <select
+                        value={formData.area}
+                        onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                        className={`${selectClass} pr-6 ${!formData.area ? "text-foreground/40" : ""}`}
+                      >
+                        <option value="">Выберите микрорайон</option>
+                        {districtGroups.map((group) => (
+                          <optgroup key={group.label} label={group.label}>
+                            {group.areas.map((a) => (
+                              <option key={a} value={a}>{a}</option>
+                            ))}
+                          </optgroup>
+                        ))}
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
+                    </div>
+                    {/* Fee hint */}
+                    {formData.area && (() => {
+                      const group = districtGroups.find((g) => g.areas.includes(formData.area))
+                      return group?.fee ? (
+                        <p className="mt-1 font-mono text-xs text-primary/80">
+                          Выезд в этот микрорайон: {group.fee}
+                        </p>
+                      ) : (
+                        <p className="mt-1 font-mono text-xs text-foreground/50">
+                          Выезд без дополнительной комиссии
+                        </p>
+                      )
+                    })()}
+                  </div>
                 )}
-              </div>
-            </form>
+
+                {/* Problem */}
+                <div
+                  className={`transition-all duration-700 ${
+                    isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
+                  }`}
+                  style={{ transitionDelay: "500ms" }}
+                >
+                  <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Что случилось?</label>
+                  <textarea
+                    rows={2}
+                    value={formData.problem}
+                    onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
+                    className="w-full resize-none border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
+                    placeholder="Например: холодильник не морозит, марка Atlant..."
+                  />
+                </div>
+
+                {/* Submit */}
+                <div
+                  className={`pt-1 transition-all duration-700 ${
+                    isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+                  }`}
+                  style={{ transitionDelay: "600ms" }}
+                >
+                  <MagneticButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full disabled:opacity-50"
+                  >
+                    {isSubmitting ? "Отправка..." : "Вызвать мастера"}
+                  </MagneticButton>
+                  <p className="mt-2 text-center font-mono text-xs text-foreground/40">
+                    Мастер перезвонит в течение 15 минут
+                  </p>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
